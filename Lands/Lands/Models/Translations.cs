@@ -7,7 +7,7 @@ namespace Lands.Models
     public class Translations
     {
         [JsonProperty(PropertyName = "de")]
-        public string Germanu { get; set; }
+        public string Germany { get; set; }
 
         [JsonProperty(PropertyName = "es")]
         public string Spanish { get; set; }
@@ -25,7 +25,7 @@ namespace Lands.Models
         public string Brazilian { get; set; }
 
         [JsonProperty(PropertyName = "pt")]
-        public string Portuge { get; set; }
+        public string Portuges { get; set; }
 
         [JsonProperty(PropertyName = "nl")]
         public string Dutch { get; set; }
@@ -34,6 +34,6 @@ namespace Lands.Models
         public string Croatian { get; set; }
 
         [JsonProperty(PropertyName = "fa")]
-        public string Danish { get; set; }
+        public string Persian { get; set; }
     }
 }

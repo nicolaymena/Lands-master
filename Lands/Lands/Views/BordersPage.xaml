@@ -12,8 +12,9 @@
             Padding="5">
             <Label 
                 FontAttributes="Bold"
-                FontSize="Medium" 
-                Text="{Binding Name}"
+                FontSize="Large" 
+                HorizontalOptions="Center"
+                Text="{Binding Land.Name}"
                 TextColor="Black">
             </Label>
             <ListView
