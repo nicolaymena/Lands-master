@@ -165,8 +165,8 @@ namespace Lands.ViewModels
             this.IsRemembered = true;
             this.IsEnabled = true;
 
-            //this.Email = "jzuluaga55@gmail.com";
-            //this.Password = "1234";
+            this.Email = "juan@gmail.com";
+            this.Password = "123456";
 
             
         }
