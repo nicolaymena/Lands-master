@@ -6,10 +6,14 @@ namespace Lands.ViewModels
     using System.Windows.Input;
     using Xamarin.Forms;
     using Views;
+    using Services;
 
 
     public class LoginViewModel : BaseViewModel
     {
+        #region Services
+        private ApiService apiService;
+        #endregion
 
         #region Attributes
 
@@ -79,20 +83,67 @@ namespace Lands.ViewModels
             this.IsRunning = true;
             this.IsEnabled = false;
 
-            if (this.Email != "jzuluaga55@gmail.com" || this.Password != "1234")
+            //if (this.Email != "jzuluaga55@gmail.com" || this.Password != "1234")
+            //{
+            //    this.IsRunning = false;
+            //    this.IsEnabled = true;
+            //    await Application.Current.MainPage.DisplayAlert(
+            //        "Error",
+            //        "Email or pasword incorrect.",
+            //        "Accept");
+            //    this.Password = string.Empty;
+            //    return;
+            //}
+            var connection = await this.apiService.CheckConnection();
+
+            if(!connection.IsSuccess)
             {
                 this.IsRunning = false;
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
-                    "Email or pasword incorrect.",
+                    connection.Message,
+                    "Accept");
+                return;
+            }
+
+            var token = await this.apiService.GetToken(
+                "http://landsapi1.azurewebsites.net/", 
+                this.Email, 
+                this.Password);
+
+            if(token==null)
+            {
+                this.IsRunning = false;
+                this.IsEnabled = true;
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    "Something was wrong, please try later.",
+                    "Accept");
+                return;
+            }
+
+            if(string.IsNullOrEmpty(token.AccessToken))
+            {
+                this.IsRunning = false;
+                this.IsEnabled = true;
+                await Application.Current.MainPage.DisplayAlert(
+                    "Error",
+                    token.ErrorDescription,
                     "Accept");
                 this.Password = string.Empty;
                 return;
             }
 
+            var mainViewModel = MainViewModel.GetInstance();
+            mainViewModel.Token = token;
+            mainViewModel.Lands = new LandsViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new LandsPage());
+
             this.IsRunning = false;
             this.IsEnabled = true;
+
+
 
             //await Application.Current.MainPage.DisplayAlert(
             //        "Error",
@@ -101,8 +152,7 @@ namespace Lands.ViewModels
             this.Email = string.Empty;
             this.Password = string.Empty;
 
-            MainViewModel.GetInstance().Lands = new LandsViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new LandsPage());
+            
 
         }
         #endregion
@@ -111,13 +161,14 @@ namespace Lands.ViewModels
 
         public LoginViewModel()
         {
+            this.apiService = new ApiService();
             this.IsRemembered = true;
             this.IsEnabled = true;
 
-            this.Email = "jzuluaga55@gmail.com";
-            this.Password = "1234";
+            //this.Email = "jzuluaga55@gmail.com";
+            //this.Password = "1234";
 
-            //http://restcountries.eu/rest/v2/all
+            
         }
         #endregion
     }

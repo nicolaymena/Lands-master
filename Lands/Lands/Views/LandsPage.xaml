@@ -13,7 +13,7 @@
                 BackgroundColor="Silver"
                 Text="{Binding Filter, Mode=TwoWay}"
                 Placeholder="Search..."
-                HeightRequest="40"
+                HeightRequest="46"
                 SearchCommand="{Binding SearchCommand}">
 
             </SearchBar>
