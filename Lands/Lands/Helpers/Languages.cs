@@ -33,6 +33,10 @@
         {
             get { return Resource.Remenberme; }
         }
+        public static string RecuperatePassword
+        {
+            get { return Resource.RecuperatePassword; }
+        }
     }
 }
 

@@ -129,6 +129,9 @@
   <data name="Error" xml:space="preserve">
     <value>Erreur</value>
   </data>
+  <data name="RecuperatePassword" xml:space="preserve">
+    <value>Mot de passe oublié ?</value>
+  </data>
   <data name="Rememberme" xml:space="preserve">
     <value>Maintenir ma connexion </value>
   </data>

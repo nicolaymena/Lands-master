@@ -67,7 +67,7 @@
             </StackLayout>
                 <Label
                 HorizontalOptions="Center"
-                Text="Forgot your password?"
+                Text="{i18n:Translate RecuperatePassword}"
                 TextColor="Blue"
                 VerticalOptions="CenterAndExpand"></Label>
                 <StackLayout
