@@ -2,9 +2,10 @@
 <ContentPage 
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:i18n="clr-namespace:Lands.Helpers"
     x:Class="Lands.Views.LanguagesPage"
     BindingContext="{Binding Main, Source={StaticResource Locator}}"
-    Title="Languages"
+    Title="{i18n:Translate MyLanguages}"
     Icon="ic_people">
     <ContentPage.Content>
         <StackLayout
