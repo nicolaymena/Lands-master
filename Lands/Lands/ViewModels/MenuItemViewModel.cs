@@ -7,6 +7,7 @@ namespace Lands.ViewModels
     using Views;
     using System.Windows.Input;
     using Xamarin.Forms;
+    using Helpers;
 
     public class MenuItemViewModel
     {
@@ -34,10 +35,15 @@ namespace Lands.ViewModels
         {
             if(this.PageName == "LoginPage")
             {
+                Settings.Token = string.Empty;
+                Settings.TokenType = string.Empty;
+                var mainViewModel = MainViewModel.GetInstance();
+                mainViewModel.Token = string.Empty;
+                mainViewModel.TokenType = string.Empty;
                 Application.Current.MainPage = new LoginPage();
             }
         }
 
-        #endregion
+        #endregion  
     }
 }

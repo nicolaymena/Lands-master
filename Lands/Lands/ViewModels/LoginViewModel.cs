@@ -137,7 +137,15 @@ namespace Lands.ViewModels
             }
 
             var mainViewModel = MainViewModel.GetInstance();
-            mainViewModel.Token = token;
+            mainViewModel.Token = token.AccessToken;
+            mainViewModel.TokenType = token.TokenType;
+
+            if(this.IsRemembered)
+            {
+                Settings.Token = token.AccessToken;
+                Settings.TokenType = token.TokenType;
+            }
+           
             mainViewModel.Lands = new LandsViewModel();
             Application.Current.MainPage = new MasterPage();
 
@@ -166,8 +174,8 @@ namespace Lands.ViewModels
             this.IsRemembered = true;
             this.IsEnabled = true;
 
-            this.Email = "juan@gmail.com";
-            this.Password = "123456";
+            //this.Email = "juan@gmail.com";
+            //this.Password = "123456";
 
             
         }
