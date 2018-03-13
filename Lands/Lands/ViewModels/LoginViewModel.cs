@@ -8,7 +8,7 @@ namespace Lands.ViewModels
     using Views;
     using Services;
     using Helpers;
-
+    using System;
 
     public class LoginViewModel : BaseViewModel
     {
@@ -179,6 +179,21 @@ namespace Lands.ViewModels
 
             
         }
+
+        public ICommand RegisterCommand
+        {
+            get
+            {
+                return new RelayCommand(Register);
+            }
+        }
+
+        private async void Register()
+        {
+            MainViewModel.GetInstance().Register = new RegisterViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+        }
+
         #endregion
     }
 }
