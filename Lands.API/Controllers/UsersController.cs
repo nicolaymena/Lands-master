@@ -12,7 +12,10 @@ namespace Lands.API.Controllers
     using System.Web.Http.Description;
     using System.IO;
     using System;
+    using Newtonsoft.Json.Linq;
 
+
+    [RoutePrefix("api/Users")]
     public class UsersController : ApiController
     {
         private DataContext db = new DataContext();
@@ -23,11 +26,23 @@ namespace Lands.API.Controllers
             return db.Users;
         }
 
+        [HttpPost]
         // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        [Route("GetUserByEmail")]  //Este lo uso porque el get no funciono. por lo cual el GetUserByEmail es igual al GetUser
+        //[ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> GetUser(JObject form)
         {
-            User user = await db.Users.FindAsync(id);
+            var email = string.Empty;
+            dynamic jsonObject = form;
+            try
+            {
+                email = jsonObject.Email.Value;
+            }
+            catch
+            {
+                return BadRequest("Missing parameter.");
+            }
+            var user = await db.Users.Where(u => u.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
@@ -73,16 +88,16 @@ namespace Lands.API.Controllers
 
         // POST: api/Users
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(UserView view)
+        public async Task<IHttpActionResult> PostUser(User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (view.ImageArray != null && view.ImageArray.Length > 0)
+            if (user.ImageArray != null && user.ImageArray.Length > 0)
             {
-                var stream = new MemoryStream(view.ImageArray);
+                var stream = new MemoryStream(user.ImageArray);
                 var guid = Guid.NewGuid().ToString();
                 var file = string.Format("{0}.jpg", guid);
                 var folder = "~/Content/Images";
@@ -91,32 +106,18 @@ namespace Lands.API.Controllers
 
                 if (response)
                 {
-                    view.ImagePath = fullPath;
+                    user.ImagePath = fullPath;
                 }
             }
 
-            var user = this.ToUser(view);
+            
             db.Users.Add(user);
             await db.SaveChangesAsync();
-            UsersHelper.CreateUserASP(view.Email, "User", view.Password);
+            UsersHelper.CreateUserASP(user.Email, "User", user.Password);
 
-            return CreatedAtRoute("DefaultApi", new { id = view.UserId }, view);
+            return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
         }
 
-        private User ToUser(UserView view)
-        {
-            return new User
-            {
-                Email = view.Email,
-                FirstName = view.FirstName,
-                ImagePath = view.ImagePath,
-                LastName = view.LastName,
-                Telephone = view.Telephone,
-                UserId = view.UserId,
-                UserType = view.UserType,
-                UserTypeId = view.UserTypeId,
-            };
-        }
 
         // DELETE: api/Users/5
         [ResponseType(typeof(User))]
