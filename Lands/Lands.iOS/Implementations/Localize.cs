@@ -73,8 +73,8 @@ namespace Lands.iOS.Implementations
             var netLanguage = platCulture.LanguageCode; // use the first part of the identifier (two chars, usually);
             switch (platCulture.LanguageCode)
             {
-                case "pt":
-                    netLanguage = "pt-PT"; // fallback to Portuguese (Portugal)
+                case "fr":
+                    netLanguage = "fr-FR"; // fallback to Portuguese (Portugal)
                     break;
                 case "gsw":
                     netLanguage = "de-CH"; // equivalent to German (Switzerland) for this app
@@ -87,4 +87,5 @@ namespace Lands.iOS.Implementations
         }
     }
 
+    
 }

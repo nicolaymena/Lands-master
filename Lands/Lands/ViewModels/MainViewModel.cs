@@ -7,6 +7,7 @@ namespace Lands.ViewModels
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using Helpers;
+    using Lands.Domain;
 
     public class MainViewModel
     {
@@ -19,6 +20,8 @@ namespace Lands.ViewModels
         public string TokenType { get; set; }
 
         public ObservableCollection<MenuItemViewModel> Menus { get; set; }
+
+        public User User { get; set; }
 
         #endregion
 

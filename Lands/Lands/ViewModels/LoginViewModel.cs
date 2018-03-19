@@ -10,6 +10,7 @@ namespace Lands.ViewModels
     using Helpers;
     using System;
 
+
     public class LoginViewModel : BaseViewModel
     {
         #region Services
@@ -68,16 +69,16 @@ namespace Lands.ViewModels
                 await Application.Current.MainPage.DisplayAlert(
                     Languages.Error,
                     Languages.EmailValidation,
-                    Languages.Accept);
+                    Languages.Accept); 
                 return;
             }
 
             if (string.IsNullOrEmpty(this.Password))
             {
                 await Application.Current.MainPage.DisplayAlert(
-                    "Error",
-                    "You must enter an password",
-                    "Accept");
+                   Languages.Error,
+                   Languages.PasswordValidation,
+                   Languages.Accept);
                 return;
             }
 
@@ -102,9 +103,9 @@ namespace Lands.ViewModels
                 this.IsRunning = false;
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
-                    "Error",
+                    Languages.Error,
                     connection.Message,
-                    "Accept");
+                    Languages.Accept);
                 return;
             }
             var apiSecurity = Application.Current.Resources["APISecurity"].ToString();
@@ -118,9 +119,9 @@ namespace Lands.ViewModels
                 this.IsRunning = false;
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
-                    "Error",
-                    "Something was wrong, please try later.",
-                    "Accept");
+                    Languages.Error,
+                    Languages.SomethingWrong,
+                    Languages.Accept);
                 return;
             }
 
@@ -129,16 +130,23 @@ namespace Lands.ViewModels
                 this.IsRunning = false;
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
-                    "Error",
+                    Languages.Error,
                     token.ErrorDescription,
-                    "Accept");
+                    Languages.Accept);
                 this.Password = string.Empty;
                 return;
             }
 
+            var user = await this.apiService.GetUserByEmail(
+               apiSecurity,
+               "/api",
+               "/Users/GetUserByEmail",
+               this.Email);
+
             var mainViewModel = MainViewModel.GetInstance();
             mainViewModel.Token = token.AccessToken;
             mainViewModel.TokenType = token.TokenType;
+            mainViewModel.User = user;
 
             if(this.IsRemembered)
             {
